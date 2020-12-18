@@ -2,15 +2,11 @@ package com.nima.animation
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.LinearInterpolator
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 
-const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     var duration = 1000L
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +16,10 @@ class MainActivity : AppCompatActivity() {
         val valueAnimator1 = ValueAnimator.ofFloat(0f, 5 * 360f)
         val valueAnimator2 = ValueAnimator.ofFloat(0f, 4 * 360f)
         val valueAnimator3 = ValueAnimator.ofFloat(0f, 3 * 360f)
-        val valueAnimator4 = ValueAnimator.ofFloat(0f, 2 * 360f)
-        val valueAnimator5 = ValueAnimator.ofFloat(0f, 1 * 360f)
-        val valueAnimators = listOf<ValueAnimator>(valueAnimator1, valueAnimator2, valueAnimator3, valueAnimator4, valueAnimator5)
+        val valueAnimator4 = ValueAnimator.ofFloat(0f, 2 * 180f)
+        val valueAnimator5 = ValueAnimator.ofFloat(0f, 2 * 180f)
+        val valueAnimator6 = ValueAnimator.ofFloat(0f, 1 * 180f)
+        val valueAnimators = listOf<ValueAnimator>(valueAnimator1, valueAnimator2, valueAnimator3, valueAnimator4, valueAnimator5 , valueAnimator6)
         valueAnimator1.addUpdateListener {
             val value = it.animatedValue as Float
             myButton.rotation = value
@@ -43,36 +40,26 @@ class MainActivity : AppCompatActivity() {
             val value = it.animatedValue as Float
             myButton.rotation = value
         }
+        valueAnimator6.addUpdateListener {
+            val value = it.animatedValue as Float
+            myButton.rotation = value
+        }
         for (i in valueAnimators) {
             i.interpolator = LinearInterpolator()
             i.duration = duration / 2
         }
-        valueAnimator1.start()
-        valueAnimator1.doOnEnd {
-            valueAnimator2.start()
-            valueAnimator2.doOnEnd {
-                valueAnimator3.start()
-                valueAnimator3.doOnEnd {
-                    valueAnimator4.start()
-                    valueAnimator4.doOnEnd {
-                        valueAnimator5.start()
-                        valueAnimator5.doOnEnd {
-                            for (i in valueAnimators) {
-                                i.interpolator = LinearInterpolator()
-                                i.duration = duration * 2
-                            }
-                            valueAnimator5.start()
-                            valueAnimator5.doOnEnd {
-                                valueAnimator4.start()
-                                valueAnimator4.doOnEnd {
-                                    valueAnimator3.start()
-                                    valueAnimator3.doOnEnd {
-                                        valueAnimator2.start()
-                                        valueAnimator2.doOnEnd {
-                                            valueAnimator1.start()
-                                        }
-                                    }
-                                }
+        valueAnimator6.start()
+        valueAnimator6.doOnEnd {
+            valueAnimator5.start()
+            valueAnimator5.doOnEnd {
+                valueAnimator4.start()
+                valueAnimator4.doOnEnd {
+                    valueAnimator3.start()
+                    valueAnimator3.doOnEnd {
+                        valueAnimator2.start()
+                        valueAnimator2.doOnEnd {
+                            valueAnimator1.doOnEnd {
+                                valueAnimator6.start()
                             }
                         }
                     }
@@ -81,4 +68,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
 
